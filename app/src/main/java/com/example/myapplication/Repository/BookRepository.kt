@@ -2,8 +2,10 @@ package com.example.myapplication.Repository
 
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
+import com.example.myapplication.Database.LibroDao
+import com.example.myapplication.Entities.Libro
 
-class BibliotecaRepository(private val libroDao : LibroDao, private val autorDao : AutorDao) {
+class BookRepository(private val libroDao : LibroDao) {
 
 
     //LIBRO DAO METODOS
@@ -22,14 +24,5 @@ class BibliotecaRepository(private val libroDao : LibroDao, private val autorDao
     @WorkerThread
     fun buscarUnLibro(isbn : String)= libroDao.buscarLibro(isbn)
     //----------------------------------------------------------------------
-    //AUTOR DAO METODOS
 
-    fun getAllAuthors() : LiveData<List<Autor>> = autorDao.getAllAuthors()
-
-    @WorkerThread
-    suspend fun insertAuthor(autor : Autor){
-        libroDao.insertAuthor(autor)
-    }
-
-    fun deleteAuthors() = autorDao.deleteAuthors()
 }
