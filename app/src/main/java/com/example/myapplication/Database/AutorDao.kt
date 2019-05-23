@@ -1,5 +1,6 @@
 package com.example.myapplication.Database
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
@@ -12,6 +13,6 @@ interface AutorDao {
     suspend fun insert(autor: Autor)
 
     @Query("SELECT * FROM author_table")
-    fun getAllAuthors()
+    fun getAllAuthors() : LiveData<List<Autor>>
 
 }

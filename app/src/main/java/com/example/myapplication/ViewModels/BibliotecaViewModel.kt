@@ -29,7 +29,7 @@ class BibliotecaViewModel(application: Application) : AndroidViewModel(applicati
 
     //fun deleteBook() =  bibliotecaRepository.deleteLibro()
 
-    fun buscarLibro(referencia : String) = viewModelScope.launch(Dispatchers.IO){bibliotecaRepository.buscarLibro(referencia)}
+   // fun buscarLibro(referencia : String) = viewModelScope.launch(Dispatchers.IO){bibliotecaRepository.buscarLibro(referencia)}
 
 
 
