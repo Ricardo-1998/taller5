@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".Activities.addActivity">
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content">
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="ISBN:"
+        />
+        <EditText android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:id="@+id/et_isbn"
+                  android:hint="ISBN"
+        />
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="horizontal">
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="Name:"
+        />
+        <EditText android:id="@+id/et_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Book name"
+        />
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="horizontal">
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="Editorial:"
+        />
+        <EditText android:layout_width="match_parent"
+                  android:id="@+id/et_editorial"
+                  android:layout_height="wrap_content"
+                  android:hint="editorial name"
+        />
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="horizontal">
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="Author:"
+        />
+        <EditText android:layout_width="wrap_content"
+                  android:id="@+id/et_author"
+                  android:layout_height="wrap_content"
+                  android:hint="Author name"
+                  android:layout_weight="1"
+        />
+    </LinearLayout>
+    <TextView android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center"
+              android:id="@+id/pre_author"
+              android:text="Author: Example"
+    />
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="horizontal">
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="Tags:"
+        />
+        <EditText android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:id="@+id/et_tag"
+                  android:hint="example: fantasy, horror, action, ..."
+        />
+    </LinearLayout>
+    <TextView android:id="@+id/pre_tags"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="TAGS: fantasy , action , ...."
+    />
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content">
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="Cartelera:"
+        />
+        <EditText android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:id="@+id/et_cartelera"
+                  android:hint="img"
+        />
+    </LinearLayout>
+    <Button android:id="@+id/btn_add_book"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:text="ADD BOOK"
+    />
+    <View android:layout_width="wrap_content"
+          android:layout_height="1dp"
+          android:background="#D8D4D4"
+    />
+</LinearLayout>
