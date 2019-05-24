@@ -19,8 +19,8 @@ class bookAdapter(
     class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         fun bind(item: Libro, clickListener: (Libro) -> Unit, deleteLibro: (Libro) -> Unit) = with(itemView){
             tv_name_frag.text = item.nombre
-            tv_author_frag.text = item.autores
-            tv_tags_frag.text = item.tags
+            tv_author_frag.text = item.autores.toString()
+            tv_tags_frag.text = item.tags.toString()
             delete_book.setOnClickListener { deleteLibro(item)}
             this.setOnClickListener { clickListener(item) }
         }

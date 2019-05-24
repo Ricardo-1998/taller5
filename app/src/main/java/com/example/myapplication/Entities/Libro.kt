@@ -24,8 +24,7 @@ data class Libro(
 
     @TypeConverters(ListConverter::class)
     @ColumnInfo(name="c_autores")
-    var autores: MutableList<Int>,
-
+    var autores: Int,
     @ColumnInfo(name="c_editorial")
     val editorial: String,
 
@@ -38,5 +37,5 @@ data class Libro(
 
     @TypeConverters(ListConverter::class)
     @ColumnInfo(name="c_tag")
-    var tags: MutableList<Int>
+    var tags: Int
 )

@@ -28,8 +28,8 @@ class MainActivity : AppCompatActivity(), booksFragment.clickListener  {
                 .putExtra(addActivity.EXTRA_ISBN,book.isbn)
                 .putExtra(addActivity.EXTRA_CARTELERA,book.caratula)
                 .putExtra(addActivity.EXTRA_EDITORIAL,book.editorial)
-                .putExtra(addActivity.EXTRA_AUTHOR,book.autores.toTypedArray())
-                .putExtra(addActivity.EXTRA_TAG,book.tags.toTypedArray()))
+                .putExtra(addActivity.EXTRA_AUTHOR,book.autores)
+                .putExtra(addActivity.EXTRA_TAG,book.tags))
     }
 
     override fun delete(book: Libro) {
@@ -72,15 +72,15 @@ class MainActivity : AppCompatActivity(), booksFragment.clickListener  {
             intentData?.let { data ->
                 val isbn = data.getStringExtra(addActivity.EXTRA_ISBN)
 
-                var arrayTag = AddAndFindTag(data.getStringArrayExtra(addActivity.EXTRA_TAG),isbn)
-                var arrayAuthor = AddAndFindAuthor(data.getStringArrayExtra(addActivity.EXTRA_AUTHOR),isbn)
+                //var arrayTag = AddAndFindTag(data.getStringArrayExtra(addActivity.EXTRA_TAG),isbn)
+                //var arrayAuthor = AddAndFindAuthor(data.getStringArrayExtra(addActivity.EXTRA_AUTHOR),isbn)
 
                 val book = Libro(isbn,
-                    arrayTag.toMutableList(),
+                    1,
                     data.getStringExtra(addActivity.EXTRA_EDITORIAL),
                     data.getStringExtra(addActivity.EXTRA_NAME),
                     data.getStringExtra(addActivity.EXTRA_CARTELERA),
-                    arrayAuthor.toMutableList())//tag.toList())
+                    1)//tag.toList())
                 viewModel.insertBook(book)
 
             }
