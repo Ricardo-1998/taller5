@@ -20,8 +20,8 @@ class bookAdapter(
     class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         fun bind(item: Libro, clickListener: (Libro) -> Unit) = with(itemView){
             tv_name_frag.text = item.nombre
-            tv_author_frag.text = item.tags
-            tv_tags_frag.text = item.autores
+            tv_author_frag.text = item.autores
+            tv_tags_frag.text = item.tags
             this.setOnClickListener { clickListener(item) }
         }
 
