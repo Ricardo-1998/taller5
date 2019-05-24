@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity(), booksFragment.clickListener  {
 
     override fun delete(book: Libro) {
         viewModel.deleteOneBook(book.isbn)
-        Toast.makeText(this,"Se ha eliminado el libro",Toast.LENGTH_LONG).show()
+        Toast.makeText(this,getString(R.string.remove_book),Toast.LENGTH_LONG).show()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity(), booksFragment.clickListener  {
         }
         delete_book.setOnClickListener {
             viewModel.deleteBooks()
-            Toast.makeText(this,"Se han eliminado todos los libro",Toast.LENGTH_LONG).show()
+            Toast.makeText(this,getString(R.string.remove_all_books),Toast.LENGTH_LONG).show()
         }
     }
 
