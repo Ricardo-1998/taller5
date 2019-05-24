@@ -24,7 +24,7 @@ import androidx.room.PrimaryKey
 data class Libro(
     @PrimaryKey val isbn: String,
     @ColumnInfo(name="c_autores")
-    var autores: List<Int>,
+    var autores: Int,
     @ColumnInfo(name="c_editorial")
     val editorial: String,
     @ColumnInfo(name="c_nombre")
@@ -32,5 +32,5 @@ data class Libro(
     @ColumnInfo(name="c_caratula")
     val caratula:String,
     @ColumnInfo(name="c_tag")
-    var tags: List<Int>
+    var tags: Int
 )
