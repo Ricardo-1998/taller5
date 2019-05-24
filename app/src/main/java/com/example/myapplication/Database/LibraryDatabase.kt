@@ -4,11 +4,15 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.example.myapplication.Dao.*
 import com.example.myapplication.Entities.*
+import com.example.myapplication.typeConvert.ListConverter
+
 
 @Database(entities = [Autor::class,Libro::class,Tag::class,LibroXTag::class,LibroXAutor::class]
     ,version = 1,exportSchema = false)
+@TypeConverters(ListConverter::class)
 abstract class LibraryDatabase:RoomDatabase() {
 
     abstract fun libroDao() : LibroDao

@@ -1,10 +1,8 @@
 package com.example.myapplication.Entities
 
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.PrimaryKey
+import androidx.room.*
+import com.example.myapplication.typeConvert.ListConverter
 
 
 @Entity(tableName = "book_table",
@@ -23,14 +21,22 @@ import androidx.room.PrimaryKey
     )
 data class Libro(
     @PrimaryKey val isbn: String,
+
+    @TypeConverters(ListConverter::class)
     @ColumnInfo(name="c_autores")
-    var autores: List<Int>,
+    var autores: MutableList<Int>,
+
     @ColumnInfo(name="c_editorial")
     val editorial: String,
+
     @ColumnInfo(name="c_nombre")
     val nombre:String,
+
     @ColumnInfo(name="c_caratula")
     val caratula:String,
+
+
+    @TypeConverters(ListConverter::class)
     @ColumnInfo(name="c_tag")
-    var tags: List<Int>
+    var tags: MutableList<Int>
 )

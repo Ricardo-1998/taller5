@@ -4,10 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.myapplication.Entities.Libro
 import com.example.myapplication.R
 import kotlinx.android.synthetic.main.libro_item.view.*
@@ -18,6 +15,7 @@ class bookAdapter(
 ) : RecyclerView.Adapter<bookAdapter.ViewHolder>() {
 
     private var books: List<Libro> = emptyList()
+
     class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         fun bind(item: Libro, clickListener: (Libro) -> Unit, deleteLibro: (Libro) -> Unit) = with(itemView){
             tv_name_frag.text = item.nombre

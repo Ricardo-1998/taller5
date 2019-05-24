@@ -7,9 +7,9 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.example.myapplication.Adapter.bookAdapter
 import com.example.myapplication.Entities.Autor
 import com.example.myapplication.Entities.Libro
+import com.example.myapplication.Entities.Tag
 import com.example.myapplication.Fragment.booksFragment
 import com.example.myapplication.R
 import com.example.myapplication.ViewModels.BibliotecaViewModel
@@ -28,8 +28,8 @@ class MainActivity : AppCompatActivity(), booksFragment.clickListener  {
                 .putExtra(addActivity.EXTRA_ISBN,book.isbn)
                 .putExtra(addActivity.EXTRA_CARTELERA,book.caratula)
                 .putExtra(addActivity.EXTRA_EDITORIAL,book.editorial)
-                .putExtra(addActivity.EXTRA_AUTHOR,book.autores)
-                .putExtra(addActivity.EXTRA_TAG,book.tags))
+                .putExtra(addActivity.EXTRA_AUTHOR,book.autores.toTypedArray())
+                .putExtra(addActivity.EXTRA_TAG,book.tags.toTypedArray()))
     }
 
     override fun delete(book: Libro) {
@@ -42,20 +42,11 @@ class MainActivity : AppCompatActivity(), booksFragment.clickListener  {
         setContentView(R.layout.activity_main)
         initFragment()
         viewModel = ViewModelProviders.of(this).get(BibliotecaViewModel::class.java)
-        viewModel.allBooks().observe(this, Observer { books ->
-            // Update the cached copy of the words in the adapter.
-            books?.let { fragment.updateAdapter(it)
-            }
-        })
+        ObservarAllBook()
 
         btn_refresh.setOnClickListener {
-            viewModel.allBooks().observe(this, Observer { books ->
-                // Update the cached copy of the words in the adapter.
-                books?.let { fragment.updateAdapter(it)
-                }
-            })
+            ObservarAllBook()
         }
-
         add_book.setOnClickListener {
             val intent = Intent(this@MainActivity, addActivity::class.java)
             startActivityForResult(intent, addActivityRequestCode)
@@ -77,33 +68,26 @@ class MainActivity : AppCompatActivity(), booksFragment.clickListener  {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, intentData: Intent?) {
         super.onActivityResult(requestCode, resultCode, intentData)
-
         if (requestCode == addActivityRequestCode && resultCode == Activity.RESULT_OK) {
             intentData?.let { data ->
+                val isbn = data.getStringExtra(addActivity.EXTRA_ISBN)
 
-                if(!findAuthor(data.getStringExtra(addActivity.EXTRA_AUTHOR))){
-                    var autor = Autor(0,data.getStringExtra(addActivity.EXTRA_AUTHOR))
-                    viewModel.insertAuthor(autor)
-                }
+                var arrayTag = AddAndFindTag(data.getStringArrayExtra(addActivity.EXTRA_TAG),isbn)
+                var arrayAuthor = AddAndFindAuthor(data.getStringArrayExtra(addActivity.EXTRA_AUTHOR),isbn)
 
-
-                val book = Libro(data.getStringExtra(addActivity.EXTRA_ISBN),
-                    data.getStringExtra(addActivity.EXTRA_AUTHOR),
+                val book = Libro(isbn,
+                    arrayTag.toMutableList(),
                     data.getStringExtra(addActivity.EXTRA_EDITORIAL),
                     data.getStringExtra(addActivity.EXTRA_NAME),
                     data.getStringExtra(addActivity.EXTRA_CARTELERA),
-                    data.getStringExtra(addActivity.EXTRA_TAG))//tag.toList())
+                    arrayAuthor.toMutableList())//tag.toList())
                 viewModel.insertBook(book)
 
             }
         } else {
             Toast.makeText(applicationContext, R.string.empty_not_saved, Toast.LENGTH_LONG).show()
         }
-        viewModel.allBooks().observe(this, Observer { books ->
-            // Update the cached copy of the words in the adapter.
-            books?.let { fragment.updateAdapter(it)
-            }
-        })
+        ObservarAllBook()
     }
 
     private fun initFragment(){
@@ -113,16 +97,55 @@ class MainActivity : AppCompatActivity(), booksFragment.clickListener  {
             .add(R.id.fragment_content, fragment).commit()
     }
 
-    private fun findAuthor(author:String): Boolean{
-        var cont = 0
-        if(!viewModel.getAllAuthors().value.isNullOrEmpty()) {
-            while (viewModel.getAllAuthors().value!!.size != cont) {
-                if (viewModel.getAllAuthors().value!![cont].nombre == author){
-                    return true
-                }
+    private fun ObservarAllBook(){
+        viewModel.allBooks().observe(this, Observer { books ->
+            // Update the cached copy of the words in the adapter.
+            books?.let { fragment.updateAdapter(it)
             }
-        }
-        return false
+        })
     }
 
+    private fun AddAndFindAuthor(autores:Array<String>,isbn:String):Array<Int>{
+        var idAutors: Array<Int> = arrayOf()
+        if(!viewModel.getAllAuthors().value.isNullOrEmpty()){
+            for(a in autores) {
+                var cont = 0
+                while (viewModel.getAllAuthors().value!!.size != cont) {
+                    if (viewModel.getAllAuthors().value!![cont].nombre == a) {
+                        viewModel.insertAuthor(Autor(0, a))
+                    }
+                    cont++
+                }
+            }
+            var cont = 0
+            while (viewModel.getAllAuthors().value!!.size != cont) {
+                idAutors[cont] = viewModel.getAllAuthors().value!![cont].id
+                cont++
+            }
+        }
+        return idAutors
+    }
+
+    private fun AddAndFindTag(tag:Array<String>,isbn:String):Array<Int>{
+        var idTags: Array<Int> = arrayOf()
+        if(!viewModel.getTags().value.isNullOrEmpty()){
+            for(a in tag) {
+                var cont = 0
+                while (viewModel.getTags().value!!.size != cont) {
+                    if (viewModel.getTags().value!![cont].type == a) {
+                        viewModel.insertTag(Tag(0, a))
+                    }
+                    cont++
+                }
+            }
+            var cont = 0
+            while (viewModel.getTags().value!!.size != cont) {
+                idTags[cont] = viewModel.getTags().value!![cont].id
+                cont++
+            }
+        }
+        return idTags
+    }
 }
+
+
