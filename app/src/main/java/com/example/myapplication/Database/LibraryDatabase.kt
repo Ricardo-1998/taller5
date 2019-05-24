@@ -4,14 +4,18 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.myapplication.Entities.Autor
-import com.example.myapplication.Entities.Libro
+import com.example.myapplication.Dao.*
+import com.example.myapplication.Entities.*
 
-@Database(entities = [Autor::class,Libro::class],version = 1,exportSchema = false)
-public abstract class LibraryDatabase:RoomDatabase() {
+@Database(entities = [Autor::class,Libro::class,Tag::class,LibroXTag::class,LibroXAutor::class]
+    ,version = 1,exportSchema = false)
+abstract class LibraryDatabase:RoomDatabase() {
 
     abstract fun libroDao() : LibroDao
     abstract fun autorDao() : AutorDao
+    abstract fun tagDao() : TagDao
+    abstract fun tagXLibroDao() : LibroXTagDao
+    abstract fun autorXLibroDao() : LibroXAutorDao
 
     companion object {
         private var INSTANCE:LibraryDatabase?=null

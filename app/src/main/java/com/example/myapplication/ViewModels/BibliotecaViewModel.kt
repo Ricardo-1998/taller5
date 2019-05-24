@@ -5,8 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.example.myapplication.Database.LibraryDatabase
-import com.example.myapplication.Entities.Autor
-import com.example.myapplication.Entities.Libro
+import com.example.myapplication.Entities.*
 import com.example.myapplication.Repository.BibliotecaRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -19,8 +18,11 @@ class BibliotecaViewModel(application: Application) : AndroidViewModel(applicati
     init {
         val bookDao = LibraryDatabase.getInstance(application).libroDao()
         val authorDao = LibraryDatabase.getInstance(application).autorDao()
+        val tagDao = LibraryDatabase.getInstance(application).tagDao()
+        val tagXLibroDao = LibraryDatabase.getInstance(application).tagXLibroDao()
+        val autorXLibroDao = LibraryDatabase.getInstance(application).autorXLibroDao()
 
-        bibliotecaRepository = BibliotecaRepository(authorDao,bookDao)
+        bibliotecaRepository = BibliotecaRepository(authorDao,bookDao,tagDao,autorXLibroDao,tagXLibroDao)
     }
 
     fun allBooks() : LiveData<List<Libro>> = bibliotecaRepository.allBooks()
@@ -44,6 +46,16 @@ class BibliotecaViewModel(application: Application) : AndroidViewModel(applicati
 
     //fun deleteAuthors() = authorRepository.deleteAuthors()
 
+    fun insertTag(tag: Tag) = viewModelScope.launch(Dispatchers.IO){bibliotecaRepository.insert(tag)}
+    fun getTagById(id:Int): Tag = bibliotecaRepository.getTagById(id)
+    fun getTags() : LiveData<List<Tag>> = bibliotecaRepository.getTags()
 
-
+    fun insertLibroXTag(libroXTag: LibroXTag) =
+        viewModelScope.launch(Dispatchers.IO){
+            bibliotecaRepository.insertLibroXTag(libroXTag)
+        }
+    fun insertLibroXAutor(libroXAutor: LibroXAutor) =
+            viewModelScope.launch(Dispatchers.IO) {
+                bibliotecaRepository.insertLibroXAutor(libroXAutor)
+            }
 }
