@@ -12,7 +12,7 @@ import androidx.room.PrimaryKey
         ForeignKey(
             entity = Autor::class,
             parentColumns = ["id"],
-            childColumns = ["c_autores"],
+            childColumns = ["c_autor"],
             onDelete = ForeignKey.CASCADE),
         ForeignKey(
             entity = Tag::class,
@@ -23,14 +23,12 @@ import androidx.room.PrimaryKey
     )
 data class Libro(
     @PrimaryKey val isbn: String,
-    @ColumnInfo(name="c_autores")
-    var autores: Int,
+    @ColumnInfo(name="c_autor")
+    var idAutor: Int,
     @ColumnInfo(name="c_editorial")
     val editorial: String,
     @ColumnInfo(name="c_nombre")
     val nombre:String,
     @ColumnInfo(name="c_caratula")
-    val caratula:String,
-    @ColumnInfo(name="c_tag")
-    var tags: Int
+    val caratula:String
 )

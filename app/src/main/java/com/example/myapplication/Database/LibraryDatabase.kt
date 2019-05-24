@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.example.myapplication.Dao.*
 import com.example.myapplication.Entities.*
 
-@Database(entities = [Autor::class,Libro::class,Tag::class,LibroXTag::class,LibroXAutor::class]
+@Database(entities = [Autor::class,Libro::class,Tag::class,LibroXTag::class]
     ,version = 1,exportSchema = false)
 abstract class LibraryDatabase:RoomDatabase() {
 
@@ -15,7 +15,6 @@ abstract class LibraryDatabase:RoomDatabase() {
     abstract fun autorDao() : AutorDao
     abstract fun tagDao() : TagDao
     abstract fun tagXLibroDao() : LibroXTagDao
-    abstract fun autorXLibroDao() : LibroXAutorDao
 
     companion object {
         private var INSTANCE:LibraryDatabase?=null
@@ -25,7 +24,7 @@ abstract class LibraryDatabase:RoomDatabase() {
             if(tempInstance != null) return tempInstance
             synchronized(this){
                 val instance = Room
-                    .databaseBuilder(context,LibraryDatabase::class.java,"RepoDB")
+                    .databaseBuilder(context,LibraryDatabase::class.java,"LibraryDB")
                     .build()
                 INSTANCE= instance
                 return instance

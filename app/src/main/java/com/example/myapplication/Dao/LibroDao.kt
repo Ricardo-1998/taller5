@@ -22,9 +22,9 @@ interface LibroDao {
     @Query("DELETE FROM book_table WHERE isbn Like :isbn")
     fun deleteOneBook(isbn:String)
 
-    @Query("SELECT * FROM book_table WHERE c_nombre LIKE :referencia OR  c_autores LIKE :referencia OR  c_editorial LIKE :referencia OR  c_tag LIKE :referencia")
+    @Query("SELECT a.isbn,a.c_nombre,a.c_autor,a.c_caratula,a.c_editorial FROM book_table a,bookXtag_table b,tag_table c WHERE a.c_nombre LIKE :referencia OR  a.c_autor LIKE :referencia OR  a.c_editorial LIKE :referencia OR (b.idTag LIKE c.id AND c.nombre LIKE :referencia AND b.isbnLibro LIKE a.isbn)")
     fun searchBook(referencia:String) : LiveData<List<Libro>>
 
-    @Query("SELECT a.isbn, a.c_caratula, a.isbn, a.c_nombre,b.nombre,c_editorial FROM book_table a INNER JOIN author_table b WHERE a.c_autores LIKE b.id GROUP BY a.c_nombre")
+    @Query("SELECT * FROM book_table")
     fun getAllBooks() : LiveData<List<Libro>>
 }
