@@ -27,6 +27,7 @@ class BibliotecaViewModel(application: Application) : AndroidViewModel(applicati
 
     fun insertBook(libro : Libro) = viewModelScope.launch(Dispatchers.IO){bibliotecaRepository.insertBook(libro)}
 
+    fun searchBook(referencia:String) = bibliotecaRepository.searchBook(referencia)
     //fun deleteBook() =  bibliotecaRepository.deleteLibro()
 
    // fun buscarLibro(referencia : String) = viewModelScope.launch(Dispatchers.IO){bibliotecaRepository.buscarLibro(referencia)}

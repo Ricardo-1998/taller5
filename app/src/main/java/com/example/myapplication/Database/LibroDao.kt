@@ -3,16 +3,19 @@ package com.example.myapplication.Database
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
-import androidx.room.OnConflictStrategy
+import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
 import com.example.myapplication.Entities.Libro
 
 @Dao
 interface LibroDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = REPLACE)
     suspend fun insert(libro: Libro)
 
     @Query("SELECT * FROM book_table")
     fun getAllBooks() : LiveData<List<Libro>>
+
+    @Query("SELECT * FROM book_table WHERE c_nombre LIKE :referencia OR  c_autores LIKE :referencia OR  c_editorial LIKE :referencia OR  c_tag LIKE :referencia")
+    fun searchBook(referencia:String) : Libro
 }
