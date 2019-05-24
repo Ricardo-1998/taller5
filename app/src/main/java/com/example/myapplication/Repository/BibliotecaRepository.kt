@@ -17,6 +17,9 @@ class BibliotecaRepository(private val autorDao : AutorDao, private val libroDao
         libroDao.insert(libro)
     }
 
+
+    fun searchBook(referencia:String) = libroDao.searchBook(referencia)
+
     //fun deleteLibro() = libroDao.deleteLibro()
 
     //@WorkerThread
