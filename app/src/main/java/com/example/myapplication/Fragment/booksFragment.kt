@@ -31,13 +31,13 @@ class booksFragment: Fragment() {
 
     interface clickListener{
         fun itemClick(book: Libro)
+        fun delete(book: Libro)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         val view = inflater.inflate(R.layout.books_fragment_list, container, false)
         initRecyclerView(view)
-
         return view
     }
     override fun onAttach(context: Context) {
@@ -58,7 +58,8 @@ class booksFragment: Fragment() {
     }
 
     fun initRecyclerView(container:View){
-        bookAdapter = bookAdapter { book:Libro->listenerTool?.itemClick(book)}
+        bookAdapter = bookAdapter({ book:Libro->listenerTool?.itemClick(book)},
+            { book:Libro ->listenerTool?.delete(book)})
         container.rv_book_list.apply {
             setHasFixedSize(true)
             layoutManager = GridLayoutManager(this.context,2)

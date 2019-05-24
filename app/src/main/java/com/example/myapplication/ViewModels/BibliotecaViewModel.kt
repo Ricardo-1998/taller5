@@ -28,9 +28,12 @@ class BibliotecaViewModel(application: Application) : AndroidViewModel(applicati
     fun insertBook(libro : Libro) = viewModelScope.launch(Dispatchers.IO){bibliotecaRepository.insertBook(libro)}
 
     fun searchBook(referencia:String) = bibliotecaRepository.searchBook(referencia)
-    //fun deleteBook() =  bibliotecaRepository.deleteLibro()
 
-   // fun buscarLibro(referencia : String) = viewModelScope.launch(Dispatchers.IO){bibliotecaRepository.buscarLibro(referencia)}
+    fun deleteBooks() =  viewModelScope.launch(Dispatchers.IO) {bibliotecaRepository.deleteBooks()}
+
+    fun deleteOneBook(isbn:String) = viewModelScope.launch(Dispatchers.IO){bibliotecaRepository.deleteOneBook(isbn)}
+
+    // fun buscarLibro(referencia : String) = viewModelScope.launch(Dispatchers.IO){bibliotecaRepository.buscarLibro(referencia)}
 
 
 

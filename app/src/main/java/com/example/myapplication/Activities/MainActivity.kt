@@ -22,7 +22,6 @@ class MainActivity : AppCompatActivity(), booksFragment.clickListener  {
     private lateinit var fragment: booksFragment
 
     override fun itemClick(book: Libro) {
-        Toast.makeText(this,"NOOOOOO",Toast.LENGTH_LONG)
         startActivity(
             Intent(this, BookInfoActivity::class.java)
                 .putExtra(addActivity.EXTRA_NAME,book.nombre)
@@ -31,6 +30,10 @@ class MainActivity : AppCompatActivity(), booksFragment.clickListener  {
                 .putExtra(addActivity.EXTRA_EDITORIAL,book.editorial)
                 .putExtra(addActivity.EXTRA_AUTHOR,book.autores)
                 .putExtra(addActivity.EXTRA_TAG,book.tags))
+    }
+
+    override fun delete(book: Libro) {
+        viewModel.deleteOneBook(book.isbn)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,6 +50,9 @@ class MainActivity : AppCompatActivity(), booksFragment.clickListener  {
         add_book.setOnClickListener {
             val intent = Intent(this@MainActivity, addActivity::class.java)
             startActivityForResult(intent, addActivityRequestCode)
+        }
+        delete_book.setOnClickListener {
+            viewModel.deleteBooks()
         }
     }
 

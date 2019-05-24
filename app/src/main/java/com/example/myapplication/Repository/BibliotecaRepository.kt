@@ -20,7 +20,9 @@ class BibliotecaRepository(private val autorDao : AutorDao, private val libroDao
 
     fun searchBook(referencia:String) = libroDao.searchBook(referencia)
 
-    //fun deleteLibro() = libroDao.deleteLibro()
+    fun deleteBooks() = libroDao.deleteBooks()
+
+    fun deleteOneBook(isbn:String) = libroDao.deleteOneBook(isbn)
 
     //@WorkerThread
     //fun buscarLibro(referencia : String)=  libroDao.buscarLibro(referencia)
