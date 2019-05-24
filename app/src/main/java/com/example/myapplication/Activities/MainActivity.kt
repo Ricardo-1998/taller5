@@ -48,6 +48,14 @@ class MainActivity : AppCompatActivity(), booksFragment.clickListener  {
             }
         })
 
+        btn_refresh.setOnClickListener {
+            viewModel.allBooks().observe(this, Observer { books ->
+                // Update the cached copy of the words in the adapter.
+                books?.let { fragment.updateAdapter(it)
+                }
+            })
+        }
+
         add_book.setOnClickListener {
             val intent = Intent(this@MainActivity, addActivity::class.java)
             startActivityForResult(intent, addActivityRequestCode)
@@ -55,6 +63,15 @@ class MainActivity : AppCompatActivity(), booksFragment.clickListener  {
         delete_book.setOnClickListener {
             viewModel.deleteBooks()
             Toast.makeText(this,getString(R.string.remove_all_books),Toast.LENGTH_LONG).show()
+        }
+        btn_search.setOnClickListener {
+            viewModel.searchBook(et_search.text.toString()).observe(this, Observer { books ->
+                // Update the cached copy of the words in the adapter.
+                books?.let {
+                    fragment.updateAdapter(it)
+                }
+            })
+            et_search.text.clear()
         }
     }
 
@@ -82,6 +99,11 @@ class MainActivity : AppCompatActivity(), booksFragment.clickListener  {
         } else {
             Toast.makeText(applicationContext, R.string.empty_not_saved, Toast.LENGTH_LONG).show()
         }
+        viewModel.allBooks().observe(this, Observer { books ->
+            // Update the cached copy of the words in the adapter.
+            books?.let { fragment.updateAdapter(it)
+            }
+        })
     }
 
     private fun initFragment(){
@@ -102,4 +124,5 @@ class MainActivity : AppCompatActivity(), booksFragment.clickListener  {
         }
         return false
     }
+
 }

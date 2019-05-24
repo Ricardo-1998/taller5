@@ -18,7 +18,7 @@ class BibliotecaRepository(private val autorDao : AutorDao, private val libroDao
     }
 
 
-    fun searchBook(referencia:String) = libroDao.searchBook(referencia)
+    fun searchBook(referencia:String): LiveData<List<Libro>> = libroDao.searchBook(referencia)
 
     fun deleteBooks() = libroDao.deleteBooks()
 

@@ -23,5 +23,5 @@ interface LibroDao {
     fun deleteOneBook(isbn:String)
 
     @Query("SELECT * FROM book_table WHERE c_nombre LIKE :referencia OR  c_autores LIKE :referencia OR  c_editorial LIKE :referencia OR  c_tag LIKE :referencia")
-    fun searchBook(referencia:String) : Libro
+    fun searchBook(referencia:String) : LiveData<List<Libro>>
 }
