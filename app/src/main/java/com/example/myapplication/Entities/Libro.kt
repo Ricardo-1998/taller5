@@ -1,10 +1,7 @@
 package com.example.myapplication.Entities
 
-<<<<<<< HEAD
-import androidx.lifecycle.LiveData
-=======
+
 import androidx.room.ColumnInfo
->>>>>>> 1da17190ce56c81ed01fd1d8db717c5f8e163739
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
