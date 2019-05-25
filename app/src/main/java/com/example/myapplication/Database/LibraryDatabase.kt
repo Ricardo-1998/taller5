@@ -9,10 +9,6 @@ import com.example.myapplication.Dao.*
 import com.example.myapplication.Entities.*
 import com.example.myapplication.typeConvert.ListConverter
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 13b0d1818f9517f23b5e3459da7e9550cfe5d687
 @Database(entities = [Autor::class,Libro::class,Tag::class,LibroXTag::class]
     ,version = 1,exportSchema = false)
 abstract class LibraryDatabase:RoomDatabase() {
