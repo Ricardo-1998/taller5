@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.myapplication.Database.LibraryDatabase
 import com.example.myapplication.Entities.*
 import com.example.myapplication.Repository.BibliotecaRepository
+import com.example.myapplication.models.UnLibro
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -20,16 +21,17 @@ class BibliotecaViewModel(application: Application) : AndroidViewModel(applicati
         val authorDao = LibraryDatabase.getInstance(application).autorDao()
         val tagDao = LibraryDatabase.getInstance(application).tagDao()
         val tagXLibroDao = LibraryDatabase.getInstance(application).tagXLibroDao()
-        val autorXLibroDao = LibraryDatabase.getInstance(application).autorXLibroDao()
 
-        bibliotecaRepository = BibliotecaRepository(authorDao,bookDao,tagDao,autorXLibroDao,tagXLibroDao)
+        bibliotecaRepository = BibliotecaRepository(authorDao,bookDao,tagDao,tagXLibroDao)
     }
 
-    fun allBooks() : LiveData<List<Libro>> = bibliotecaRepository.allBooks()
+    fun getAllBooks() : LiveData<List<Libro>> = bibliotecaRepository.getAllBooks()
+
+    fun getAllBooksUnLibro() : LiveData<List<UnLibro>> = bibliotecaRepository.getAllBooksUnLibro()
 
     fun insertBook(libro : Libro) = viewModelScope.launch(Dispatchers.IO){bibliotecaRepository.insertBook(libro)}
 
-    fun searchBook(referencia:String) : LiveData<List<Libro>> = bibliotecaRepository.searchBook(referencia)
+    fun searchBook(referencia:String) : LiveData<List<UnLibro>> = bibliotecaRepository.searchBook(referencia)
 
     fun deleteBooks() =  viewModelScope.launch(Dispatchers.IO) {bibliotecaRepository.deleteBooks()}
 
@@ -42,20 +44,19 @@ class BibliotecaViewModel(application: Application) : AndroidViewModel(applicati
 
     fun getAllAuthors() : LiveData<List<Autor>> = bibliotecaRepository.getAllAuthors()
 
-    fun insertAuthor(autor: Autor) = viewModelScope.launch(Dispatchers.IO) {bibliotecaRepository.insertAuthor(autor)}
+    fun insertAuthor(autor: Autor) = viewModelScope.launch(Dispatchers.IO) {
+        bibliotecaRepository.insertAuthor(autor)
+    }
 
     //fun deleteAuthors() = authorRepository.deleteAuthors()
 
     fun insertTag(tag: Tag) = viewModelScope.launch(Dispatchers.IO){bibliotecaRepository.insert(tag)}
     fun getTagById(id:Int): Tag = bibliotecaRepository.getTagById(id)
-    fun getTags() : LiveData<List<Tag>> = bibliotecaRepository.getTags()
+    fun getTags() : LiveData<List<Tag>> =  bibliotecaRepository.getTags()
 
     fun insertLibroXTag(libroXTag: LibroXTag) =
         viewModelScope.launch(Dispatchers.IO){
             bibliotecaRepository.insertLibroXTag(libroXTag)
         }
-    fun insertLibroXAutor(libroXAutor: LibroXAutor) =
-            viewModelScope.launch(Dispatchers.IO) {
-                bibliotecaRepository.insertLibroXAutor(libroXAutor)
-            }
+    fun getAllLibroXTag():LiveData<List<LibroXTag>> = bibliotecaRepository.getAllLibroXTag()
 }

@@ -5,24 +5,9 @@ import androidx.room.*
 import com.example.myapplication.typeConvert.ListConverter
 
 
-@Entity(tableName = "book_table",
-    foreignKeys = arrayOf(
-        ForeignKey(
-            entity = Autor::class,
-            parentColumns = ["id"],
-            childColumns = ["c_autores"],
-            onDelete = ForeignKey.CASCADE),
-        ForeignKey(
-            entity = Tag::class,
-            parentColumns = ["id"],
-            childColumns = ["c_tag"],
-            onDelete = ForeignKey.CASCADE)
-        )
-    )
+@Entity(tableName = "book_table")
 data class Libro(
     @PrimaryKey val isbn: String,
-
-    @TypeConverters(ListConverter::class)
     @ColumnInfo(name="c_autores")
     var autores: Int,
     @ColumnInfo(name="c_editorial")
@@ -32,10 +17,5 @@ data class Libro(
     val nombre:String,
 
     @ColumnInfo(name="c_caratula")
-    val caratula:String,
-
-
-    @TypeConverters(ListConverter::class)
-    @ColumnInfo(name="c_tag")
-    var tags: Int
+    val caratula:String
 )

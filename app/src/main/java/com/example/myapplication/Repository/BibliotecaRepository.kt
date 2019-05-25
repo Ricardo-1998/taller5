@@ -4,22 +4,27 @@ import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import com.example.myapplication.Dao.*
 import com.example.myapplication.Entities.*
+import com.example.myapplication.models.UnLibro
 
 class BibliotecaRepository(private val autorDao : AutorDao,
                            private val libroDao : LibroDao,
                            private val tagDao: TagDao,
-                           private val libroXAutorDao: LibroXAutorDao,
                            private val libroXTagDao: LibroXTagDao){
 
     //LIBRO DAO METODOS
-    fun allBooks() : LiveData<List<Libro>> = libroDao.getAllBooks()
+    fun getAllBooksUnLibro() : LiveData<List<UnLibro>> = libroDao.getAllBooksUnLibro()
+
+    fun getAllBooks() : LiveData<List<Libro>> = libroDao.getAllBooks()
+
+
 
     @WorkerThread
     suspend fun insertBook(libro : Libro){
         libroDao.insert(libro)
     }
+    fun getOneBook(isbn:String): LiveData<List<UnLibro>> = libroDao.getOneBook(isbn)
 
-    fun searchBook(referencia:String): LiveData<List<Libro>> = libroDao.searchBook(referencia)
+    fun searchBook(referencia:String): LiveData<List<UnLibro>> = libroDao.searchBook(referencia)
 
     fun deleteBooks() = libroDao.deleteBooks()
 
@@ -47,16 +52,12 @@ class BibliotecaRepository(private val autorDao : AutorDao,
 
     fun getTags() : LiveData<List<Tag>> = tagDao.getTags()
 
-    //LIBROXAUTOR DAO METODOS
-    @WorkerThread
-    suspend fun insertLibroXAutor(libroXAutor: LibroXAutor){
-        libroXAutorDao.insert(libroXAutor)
-    }
 
     //LIBROXTAG DAO METODOS
     @WorkerThread
     suspend fun insertLibroXTag(libroXTag: LibroXTag){
         libroXTagDao.insert(libroXTag)
     }
+    fun getAllLibroXTag():LiveData<List<LibroXTag>> = libroXTagDao.getAllLibroXTag()
 
 }

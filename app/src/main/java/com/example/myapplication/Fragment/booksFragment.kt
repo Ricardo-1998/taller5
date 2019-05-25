@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.Adapter.bookAdapter
 import com.example.myapplication.Entities.Libro
 import com.example.myapplication.R
+import com.example.myapplication.models.UnLibro
 import kotlinx.android.synthetic.main.books_fragment_list.view.*
 import java.lang.ClassCastException
 
@@ -53,13 +54,13 @@ class booksFragment: Fragment() {
         listenerTool = null
     }
 
-    fun updateAdapter(book: List<Libro>){
-        this.bookAdapter.setBook(book)
+    fun updateAdapter(book: List<Libro>,unLibro: List<UnLibro>){
+        this.bookAdapter.setBook(book,unLibro)
     }
 
     fun initRecyclerView(container:View){
-        bookAdapter = bookAdapter({ book:Libro->listenerTool?.itemClick(book)},
-            { book:Libro ->listenerTool?.delete(book)})
+        bookAdapter = bookAdapter({ book: Libro->listenerTool?.itemClick(book)},
+            { book: Libro ->listenerTool?.delete(book)})
         container.rv_book_list.apply {
             setHasFixedSize(true)
             layoutManager = GridLayoutManager(this.context,2)

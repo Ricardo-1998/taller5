@@ -1,5 +1,6 @@
 package com.example.myapplication.Dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -11,5 +12,8 @@ interface LibroXTagDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(libroXTag: LibroXTag)
+
+    @Query("SELECT * FROM bookXtag_table")
+    fun getAllLibroXTag():LiveData<List<LibroXTag>>
 
 }

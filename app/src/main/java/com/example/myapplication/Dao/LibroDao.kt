@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
 import com.example.myapplication.Entities.Libro
+import com.example.myapplication.models.UnLibro
 
 @Dao
 interface LibroDao {
@@ -13,8 +14,8 @@ interface LibroDao {
     @Insert(onConflict = REPLACE)
     suspend fun insert(libro: Libro)
 
-    //@Query("SELECT * FROM book_table")
-    //fun getAllBooks() : LiveData<List<Libro>>
+    @Query("SELECT * FROM book_table")
+    fun getAllBooks() : LiveData<List<Libro>>
 
     @Query("DELETE FROM book_table")
     fun deleteBooks()
@@ -22,9 +23,13 @@ interface LibroDao {
     @Query("DELETE FROM book_table WHERE isbn Like :isbn")
     fun deleteOneBook(isbn:String)
 
-    @Query("SELECT * FROM book_table WHERE c_nombre LIKE :referencia OR  c_autores LIKE :referencia OR  c_editorial LIKE :referencia OR  c_tag LIKE :referencia")
-    fun searchBook(referencia:String) : LiveData<List<Libro>>
 
-    @Query("SELECT a.isbn, a.c_caratula, a.isbn, a.c_nombre,b.nombre,c_editorial FROM book_table a INNER JOIN author_table b WHERE a.c_autores LIKE b.id GROUP BY a.c_nombre")
-    fun getAllBooks() : LiveData<List<Libro>>
+    @Query("SELECT c.isbn,c.c_caratula,c.c_nombre,c.c_editorial,c.c_autores,a.nombre,a.idAutor,b.isbnLibro,b.idTag,d.idTag,d.type FROM bookXtag_table b INNER JOIN book_table c ON b.isbnLibro = c.isbn INNER JOIN author_table a ON c.c_autores = a.idAutor INNER JOIN tag_table d ON d.idTag = b.idTag WHERE c.c_nombre LIKE :referencia OR  c.c_autores LIKE :referencia OR  c.c_editorial LIKE :referencia OR a.nombre LIKE :referencia OR d.type LIKE :referencia")
+    fun searchBook(referencia:String) : LiveData<List<UnLibro>>
+
+    @Query("SELECT c.isbn,c.c_caratula,c.c_nombre,c.c_editorial,c.c_autores,a.nombre,a.idAutor,b.isbnLibro,b.idTag,d.idTag,d.type FROM bookXtag_table b INNER JOIN book_table c ON b.isbnLibro = c.isbn INNER JOIN author_table a ON c.c_autores = a.idAutor INNER JOIN tag_table d ON d.idTag = b.idTag")
+    fun getAllBooksUnLibro() : LiveData<List<UnLibro>>
+
+    @Query("SELECT c.isbn,c.c_caratula,c.c_nombre,c.c_editorial,c.c_autores,a.nombre,a.idAutor,b.isbnLibro,b.idTag,d.idTag,d.type FROM bookXtag_table b INNER JOIN book_table c ON b.isbnLibro = c.isbn INNER JOIN author_table a ON c.c_autores = a.idAutor INNER JOIN tag_table d ON d.idTag = b.idTag WHERE c.isbn = :isbn")
+    fun getOneBook(isbn:String): LiveData<List<UnLibro>>
 }

@@ -3,17 +3,17 @@ package com.example.myapplication.Dao
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
-import androidx.room.OnConflictStrategy.REPLACE
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.myapplication.Entities.Autor
 
 @Dao
 interface AutorDao {
 
-    @Insert(onConflict = REPLACE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(autor: Autor)
 
-    @Query("SELECT * FROM author_table WHERE id LIKE :id")
+    @Query("SELECT * FROM author_table WHERE idAutor LIKE :id")
     fun getAuthorById(id:Int):Autor
 
     @Query("SELECT * FROM author_table")

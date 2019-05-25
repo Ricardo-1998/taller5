@@ -10,16 +10,14 @@ import com.example.myapplication.Entities.*
 import com.example.myapplication.typeConvert.ListConverter
 
 
-@Database(entities = [Autor::class,Libro::class,Tag::class,LibroXTag::class,LibroXAutor::class]
+@Database(entities = [Autor::class,Libro::class,Tag::class,LibroXTag::class]
     ,version = 1,exportSchema = false)
-@TypeConverters(ListConverter::class)
 abstract class LibraryDatabase:RoomDatabase() {
 
     abstract fun libroDao() : LibroDao
     abstract fun autorDao() : AutorDao
     abstract fun tagDao() : TagDao
     abstract fun tagXLibroDao() : LibroXTagDao
-    abstract fun autorXLibroDao() : LibroXAutorDao
 
     companion object {
         private var INSTANCE:LibraryDatabase?=null
