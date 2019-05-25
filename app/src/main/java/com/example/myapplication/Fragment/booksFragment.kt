@@ -31,7 +31,7 @@ class booksFragment: Fragment() {
     }
 
     interface clickListener{
-        fun itemClick(book: Libro)
+        fun itemClick(book: Libro, unLibro: List<UnLibro>)
         fun delete(book: Libro)
     }
 
@@ -59,7 +59,7 @@ class booksFragment: Fragment() {
     }
 
     fun initRecyclerView(container:View){
-        bookAdapter = bookAdapter({ book: Libro->listenerTool?.itemClick(book)},
+        bookAdapter = bookAdapter({  book: Libro, unLibro: List<UnLibro>->listenerTool?.itemClick(book,unLibro)},
             { book: Libro ->listenerTool?.delete(book)})
         container.rv_book_list.apply {
             setHasFixedSize(true)

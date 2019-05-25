@@ -6,7 +6,7 @@ data class UnLibro(
     val c_caratula: String,
     val c_nombre:Int,
     val c_editorial: String,
-    val c_autores:Int,
+    val c_autor:Int,
     val nombre:String,
     val idAutor:Int,
     val isbnLibro: String,

@@ -16,4 +16,7 @@ interface LibroXTagDao {
     @Query("SELECT * FROM bookXtag_table")
     fun getAllLibroXTag():LiveData<List<LibroXTag>>
 
+    @Query("DELETE FROM bookXtag_table")
+    fun deleteLibroXTag()
+
 }

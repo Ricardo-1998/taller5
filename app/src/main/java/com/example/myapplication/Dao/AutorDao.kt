@@ -19,4 +19,7 @@ interface AutorDao {
     @Query("SELECT * FROM author_table")
     fun getAllAuthors() : LiveData<List<Autor>>
 
+    @Query("DELETE FROM author_table")
+    fun deleteAuthors()
+
 }

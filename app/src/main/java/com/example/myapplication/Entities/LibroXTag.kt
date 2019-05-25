@@ -7,8 +7,9 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "bookXtag_table")
 data class LibroXTag (
-    @PrimaryKey
-    var id:Int = 0,
     val idTag:Int = 0,
     val isbnLibro:String = ""
-)
+){
+    @PrimaryKey(autoGenerate = true)
+    var id:Int = 0
+}

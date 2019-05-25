@@ -18,4 +18,7 @@ interface TagDao{
 
     @Query("SELECT * FROM tag_table")
     fun getTags() : LiveData<List<Tag>>
+
+    @Query("DELETE FROM tag_table")
+    fun deleteTags()
 }

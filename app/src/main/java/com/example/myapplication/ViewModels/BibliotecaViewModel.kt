@@ -17,15 +17,18 @@ class BibliotecaViewModel(application: Application) : AndroidViewModel(applicati
 
 
     init {
-        val bookDao = LibraryDatabase.getInstance(application).libroDao()
-        val authorDao = LibraryDatabase.getInstance(application).autorDao()
-        val tagDao = LibraryDatabase.getInstance(application).tagDao()
-        val tagXLibroDao = LibraryDatabase.getInstance(application).tagXLibroDao()
+        val bookDao = LibraryDatabase.getInstance(application,viewModelScope).libroDao()
+        val authorDao = LibraryDatabase.getInstance(application, viewModelScope).autorDao()
+        val tagDao = LibraryDatabase.getInstance(application, viewModelScope).tagDao()
+        val tagXLibroDao = LibraryDatabase.getInstance(application, viewModelScope).tagXLibroDao()
 
         bibliotecaRepository = BibliotecaRepository(authorDao,bookDao,tagDao,tagXLibroDao)
     }
 
+
     fun getAllBooks() : LiveData<List<Libro>> = bibliotecaRepository.getAllBooks()
+
+    fun searchBook2(referencia:String) : LiveData<List<Libro>> = bibliotecaRepository.searchBook2(referencia)
 
     fun getAllBooksUnLibro() : LiveData<List<UnLibro>> = bibliotecaRepository.getAllBooksUnLibro()
 
@@ -44,19 +47,19 @@ class BibliotecaViewModel(application: Application) : AndroidViewModel(applicati
 
     fun getAllAuthors() : LiveData<List<Autor>> = bibliotecaRepository.getAllAuthors()
 
-    fun insertAuthor(autor: Autor) = viewModelScope.launch(Dispatchers.IO) {
-        bibliotecaRepository.insertAuthor(autor)
-    }
+    fun insertAuthor(autor: Autor) = viewModelScope.launch(Dispatchers.IO) {bibliotecaRepository.insertAuthor(autor)}
 
     //fun deleteAuthors() = authorRepository.deleteAuthors()
 
     fun insertTag(tag: Tag) = viewModelScope.launch(Dispatchers.IO){bibliotecaRepository.insert(tag)}
-    fun getTagById(id:Int): Tag = bibliotecaRepository.getTagById(id)
-    fun getTags() : LiveData<List<Tag>> =  bibliotecaRepository.getTags()
+    fun getTags() : LiveData<List<Tag>> = bibliotecaRepository.getTags()
+
+    fun deleteTags() = bibliotecaRepository.deleteTags()
+
+    fun deleteAutor() = bibliotecaRepository.deleteAutor()
 
     fun insertLibroXTag(libroXTag: LibroXTag) =
         viewModelScope.launch(Dispatchers.IO){
             bibliotecaRepository.insertLibroXTag(libroXTag)
         }
-    fun getAllLibroXTag():LiveData<List<LibroXTag>> = bibliotecaRepository.getAllLibroXTag()
 }

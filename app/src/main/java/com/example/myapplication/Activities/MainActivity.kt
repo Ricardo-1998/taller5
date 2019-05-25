@@ -23,13 +23,25 @@ class MainActivity : AppCompatActivity(), booksFragment.clickListener  {
     private val addActivityRequestCode = 1
     lateinit var viewModel: BibliotecaViewModel
     private lateinit var fragment: booksFragment
+    private lateinit var unLibro:List<UnLibro>
 
-    override fun itemClick(book: Libro) {
+    override fun itemClick(book: Libro, unLibro: List<UnLibro>) {
         var StringTag = ""
         var autorString = ""
-        var unL = viewModel.getAllBooksUnLibro().value
-        var alltag = viewModel.getTags().value
-        var alltagxvalue = viewModel.getAllLibroXTag().value
+        var cont= 0
+        for( a in unLibro!!){
+            if(book.isbn==a.isbn){
+                if(cont == 0) {
+                    autorString = a.nombre
+                    StringTag = a.type
+                }
+                else{
+                    StringTag += ",${a.type}"
+                    autorString = a.nombre
+                }
+                cont++
+            }
+        }
         startActivity(
             Intent(this, BookInfoActivity::class.java)
                 .putExtra(addActivity.EXTRA_NAME, book.nombre)
@@ -65,12 +77,12 @@ class MainActivity : AppCompatActivity(), booksFragment.clickListener  {
             Toast.makeText(this,getString(R.string.remove_all_books),Toast.LENGTH_LONG).show()
         }
         btn_search.setOnClickListener {
-            viewModel.getAllBooks().observe(this, Observer { unLibro ->
-                viewModel.searchBook(et_search.text.toString()).observe(this, Observer { books ->
+            viewModel.getAllBooksUnLibro().observe(this, Observer { unLibro ->
+                viewModel.searchBook2(et_search.text.toString()).observe(this, Observer { books ->
                     // Update the cached copy of the words in the adapter.
                     books?.let {
-                        if(unLibro!=null) {
-                            fragment.updateAdapter(unLibro, it)
+                        if (unLibro != null) {
+                            fragment.updateAdapter(it,unLibro)
                         }
                     }
                 })
@@ -85,18 +97,52 @@ class MainActivity : AppCompatActivity(), booksFragment.clickListener  {
             intentData?.let { data ->
                 val isbn = data.getStringExtra(addActivity.EXTRA_ISBN)
                 val arrayTags = data.getStringArrayExtra(addActivity.EXTRA_TAG)
-                Log.wtf("NO JODAS","${arrayTags.isEmpty()}")
                 val autorname = data.getStringExtra(addActivity.EXTRA_AUTHOR)
-                insertarTag(arrayTags)
-                insertAutor(autorname)
-                val idAutor = getIdAutor(autorname)
-                val book = Libro(isbn, idAutor,
-                    data.getStringExtra(addActivity.EXTRA_EDITORIAL),
-                    data.getStringExtra(addActivity.EXTRA_NAME),
-                    data.getStringExtra(addActivity.EXTRA_CARTELERA))
-                viewModel.insertBook(book)
-
-                insertarLibroXTag(arrayTags,isbn)
+                //Insert Tag
+                var id = 0
+                viewModel.getTags().observe(this, Observer { listTag ->
+                    if (listTag == null) {
+                        for (a in arrayTags) {
+                            viewModel.insertTag(Tag(a))
+                        }
+                    }else {
+                        for (b in arrayTags) {
+                            if (!TagCan(b,listTag)) {
+                                viewModel.insertTag(Tag(b))
+                            }
+                        }
+                    }
+                    //Insert Author
+                    viewModel.getAllAuthors().observe(this, Observer{
+                        if(it == null){
+                            viewModel.insertAuthor(Autor(autorname))
+                        }
+                        else{
+                            if(!AutorCan(autorname,it)){
+                                viewModel.insertAuthor(Autor(autorname))
+                            }
+                            for (a in it){
+                                if(a.nombre == autorname){
+                                    id = a.idAutor
+                                }
+                            }
+                        }
+                        //Insert Book
+                        val book = Libro(isbn, id,
+                            data.getStringExtra(addActivity.EXTRA_EDITORIAL),
+                            data.getStringExtra(addActivity.EXTRA_NAME),
+                            data.getStringExtra(addActivity.EXTRA_CARTELERA))
+                        viewModel.insertBook(book)
+                        //Insert Book x Tags
+                        for (a in listTag) {
+                            for (b in arrayTags) {
+                                if (b == a.type) {
+                                    viewModel.insertLibroXTag(LibroXTag(a.idTag, isbn))
+                                }
+                            }
+                        }
+                    })
+                })
             }
         } else {
             Toast.makeText(applicationContext, R.string.empty_not_saved, Toast.LENGTH_LONG).show()
@@ -117,6 +163,7 @@ class MainActivity : AppCompatActivity(), booksFragment.clickListener  {
                 viewModel.getAllBooks().observe(this, Observer { books ->
                     books?.let {
                         if (it != null) {
+                            this.unLibro = unLibro
                             fragment.updateAdapter(it,unLibro)
                         }
                     }
@@ -126,53 +173,22 @@ class MainActivity : AppCompatActivity(), booksFragment.clickListener  {
 
     }
 
-    private fun insertarTag(tags:Array<String>){
-        for (a in tags){
-            if(viewModel.getTags().value.isNullOrEmpty()) {
-                viewModel.insertTag(Tag(0,a))
-            }else{
-                viewModel.insertTag(Tag(viewModel.getTags().value!!.size,a))
-                Log.wtf("DLSMADL","melwqmlmdl")
+    private fun AutorCan(nombre:String, array:List<Autor>):Boolean{
+        for(a in array){
+            if(a.nombre == nombre){
+                return true
             }
         }
+        return false
     }
 
-    private fun insertarLibroXTag(tags: Array<String>,isbn:String){
-        var allTags = viewModel.getTags().value
-        if(allTags != null){
-            for (a in allTags!!){
-                for (b in tags) {
-                    if(a.type == b) {
-                        if (viewModel.getAllLibroXTag().value.isNullOrEmpty()) {
-                            viewModel.insertLibroXTag(LibroXTag(0,a.idTag, isbn))
-                        }else{
-                            viewModel.insertLibroXTag(LibroXTag(viewModel.getAllLibroXTag().value!!.size,a.idTag, isbn))
-                        }
-                    }
-                }
+    private fun TagCan(nombre:String, array:List<Tag>):Boolean{
+        for(a in array){
+            if(a.type == nombre){
+                return true
             }
         }
-
-    }
-
-    private fun insertAutor(nombre:String){
-        if(viewModel.getAllAuthors().value.isNullOrEmpty()){
-                viewModel.insertAuthor(Autor(0,nombre))
-        }else{
-            viewModel.insertAuthor(Autor(viewModel.getAllAuthors().value!!.size,nombre))
-        }
-    }
-
-    private fun getIdAutor(nombre:String): Int{
-        var id = 0
-        viewModel.getAllAuthors().observe(this, Observer {
-            for (a in it){
-                if(a.nombre == nombre){
-                    id = a.idAutor
-                }
-            }
-        })
-        return id
+        return false
     }
 }
 

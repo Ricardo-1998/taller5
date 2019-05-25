@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.activity_book_info.view.*
 import kotlinx.android.synthetic.main.libro_item.view.*
 
 class bookAdapter(
-    private val clickListener: (Libro) -> Unit,
+    private val clickListener: (Libro,List<UnLibro>) -> Unit,
     private val deleteLibro: (Libro) -> Unit
 ) : RecyclerView.Adapter<bookAdapter.ViewHolder>() {
 
@@ -21,11 +21,10 @@ class bookAdapter(
     private var unLibro: List<UnLibro> = emptyList()
 
     class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-        fun bind(item: Libro,unLibro: List<UnLibro>, clickListener: (Libro) -> Unit, deleteLibro: (Libro) -> Unit) = with(itemView){
+        fun bind(item: Libro,unLibro: List<UnLibro>, clickListener: (Libro,List<UnLibro>) -> Unit, deleteLibro: (Libro) -> Unit) = with(itemView){
             var string = ""
-            Log.wtf("NO JODAS","${unLibro.isNullOrEmpty()}")
             for(a in unLibro){
-                if(a.idAutor == item.autores){
+                if(a.idAutor == item.idAutor){
                     string = a.nombre
                 }
 
@@ -35,7 +34,7 @@ class bookAdapter(
             tv_isbn_frag.text = item.isbn
             tv_autores_frag.text = string
             delete_book.setOnClickListener { deleteLibro(item)}
-            this.setOnClickListener { clickListener(item) }
+            this.setOnClickListener { clickListener(item,unLibro) }
         }
     }
 

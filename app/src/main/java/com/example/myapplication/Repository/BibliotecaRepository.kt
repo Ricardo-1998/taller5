@@ -12,17 +12,15 @@ class BibliotecaRepository(private val autorDao : AutorDao,
                            private val libroXTagDao: LibroXTagDao){
 
     //LIBRO DAO METODOS
-    fun getAllBooksUnLibro() : LiveData<List<UnLibro>> = libroDao.getAllBooksUnLibro()
-
-    fun getAllBooks() : LiveData<List<Libro>> = libroDao.getAllBooks()
-
-
 
     @WorkerThread
     suspend fun insertBook(libro : Libro){
         libroDao.insert(libro)
     }
-    fun getOneBook(isbn:String): LiveData<List<UnLibro>> = libroDao.getOneBook(isbn)
+
+    fun searchBook2(referencia:String) : LiveData<List<Libro>> = libroDao.searchBook2(referencia)
+
+    fun getAllBooks() : LiveData<List<Libro>> = libroDao.getAllBooks()
 
     fun searchBook(referencia:String): LiveData<List<UnLibro>> = libroDao.searchBook(referencia)
 
@@ -42,22 +40,26 @@ class BibliotecaRepository(private val autorDao : AutorDao,
         autorDao.insert(autor)
     }
 
+    fun deleteAutor() = autorDao.deleteAuthors()
+
     //TAG DAO METODOS
     @WorkerThread
     suspend fun insert(tag: Tag){
         tagDao.insert(tag)
     }
 
+    fun getAllBooksUnLibro() : LiveData<List<UnLibro>> = libroDao.getAllBooksUnLibro()
+
     fun getTagById(id:Int): Tag = tagDao.getTagById(id)
 
     fun getTags() : LiveData<List<Tag>> = tagDao.getTags()
 
+    fun deleteTags() = tagDao.deleteTags()
 
     //LIBROXTAG DAO METODOS
     @WorkerThread
     suspend fun insertLibroXTag(libroXTag: LibroXTag){
         libroXTagDao.insert(libroXTag)
     }
-    fun getAllLibroXTag():LiveData<List<LibroXTag>> = libroXTagDao.getAllLibroXTag()
 
 }
